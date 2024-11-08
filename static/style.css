@@ -57,4 +57,10 @@ h2 {
     border-radius: 5px;
     background-color: #f9f9f9;
     resize: none;
+    transition: border 0.3s ease; /* 테두리 변화 애니메이션 */
+}
+
+#transcription.active {
+    border: 3px solid red; /* 음성 인식 중 텍스트 생성 시 테두리 강조 */
+    background-color: #fff5f5; /* 살짝 붉은 배경 */
 }
