@@ -6,10 +6,13 @@ let resetTimer;
 
 // 오디오 스트림 변수
 let audioStream = null;
+let isMicOn = false; // 마이크 상태 추적
 
 // WebSocket 메시지 처리
 socket.onmessage = function(event) {
     const data = event.data;
+
+    if (!isMicOn) return; // 마이크가 OFF 상태일 때 데이터 무시
 
     if (data.startsWith("volume:")) {
         const volume = parseInt(data.split(":")[1], 10);
@@ -53,6 +56,7 @@ async function toggleAudio() {
     if (audioToggle.checked) {
         try {
             audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            isMicOn = true; // 마이크 상태 설정
             console.log("Audio stream started");
         } catch (error) {
             console.error("Error accessing audio:", error);
@@ -64,6 +68,7 @@ async function toggleAudio() {
             tracks.forEach(track => track.stop()); // 오디오 스트림 중지
             console.log("Audio stream stopped");
         }
+        isMicOn = false; // 마이크 상태 해제
         audioStream = null;
     }
 }
